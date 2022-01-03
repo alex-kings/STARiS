@@ -1,10 +1,13 @@
 import React from "react";
 import { Calc } from "../helpers/Calculations";
+import ScatterChart from "./ScatterChart";
+import LineChart from "./LineChart";
 
 class InputBox extends React.Component {
   state = {
-    data: "",
+    data: {},
     errorMessage: "",
+    displayCharts: false,
   };
 
   handleFileInput = (event) => {
@@ -23,32 +26,36 @@ class InputBox extends React.Component {
 
   handleSubmission = () => {
     //Plot graphs here!
-
-    //dx values
-    const dx = Calc.linspace(0, 10, 110);
-    console.log(this.state.data);
-    console.log(Calc.getParrays(dx, this.state.data));
+    this.setState({ displayCharts: true });
   };
 
   render() {
     return (
-      <div className="card">
-        <p>Enter data as a .txt file here</p>
-        <input
-          onChange={this.handleFileInput}
-          type="file"
-          id="inputFile"
-          accept=".txt, .json"
-        />
-        <p>{this.state.errorMessage}</p>
-        <button
-          onClick={this.handleSubmission}
-          id="submitButton"
-          className="button"
-        >
-          submit
-        </button>
-      </div>
+      <>
+        <div className="card">
+          <p>Enter data as a .txt file here</p>
+          <input
+            onChange={this.handleFileInput}
+            type="file"
+            id="inputFile"
+            accept=".txt, .json"
+          />
+          <p>{this.state.errorMessage}</p>
+          <button
+            onClick={this.handleSubmission}
+            id="submitButton"
+            className="button"
+          >
+            submit
+          </button>
+        </div>
+        {this.state.displayCharts ? (
+          <div className="flex_container">
+            <ScatterChart fileData={this.state.data} />
+            <LineChart fileData={this.state.data} />
+          </div>
+        ) : null}
+      </>
     );
   }
 }

@@ -1,1 +1,7 @@
-
+.chart {
+  width: 500px;
+}
+.flex_container {
+  display: flex;
+  justify-content: center;
+}

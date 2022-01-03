@@ -1,5 +1,6 @@
 import "./App.css";
 import InputBox from "./components/InputBox";
+import "chart.js/auto";
 
 function App() {
   return (

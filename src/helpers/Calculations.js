@@ -3,10 +3,7 @@ const Calc = {
    * Takes an array of data from one subgroup and an array of data of the matching subgroup
    * Returns Cg for these matching subgroups.
    */
-  calculateCg(dx, Cg, Tg) {
-    const nCg = Cg.length;
-    const nTg = Tg.length;
-
+  calculateCg(dx, Cg, Tg, nCg, nTg) {
     let A = 0;
     for (let i = 0; i < nCg; i++) {
       A += Math.pow(Cg[i], 2);
@@ -23,38 +20,40 @@ const Calc = {
     for (let j = 0; j < nTg; j++) {
       D += Tg[j] + dx;
     }
-
-    return A + B + Math.pow(C + D, 2) / (nCg + nTg);
+    return A + B - Math.pow(C + D, 2) / (nCg + nTg);
   },
 
   //Returns the result of p function for the two given matching subgroups
-  calculateP(dx, Cg, Tg) {
+  calculateP(dx, Cg, Tg, nCg, nTg) {
     return Math.pow(
-      this.calculateCg(dx, Cg, Tg),
-      -(Cg.length + Tg.length - 1) / 2
+      this.calculateCg(dx, Cg, Tg, nCg, nTg),
+      -(nCg + nTg - 1) / 2
     );
   },
 
   //Takes an array of dx values and returns an array of p values for the given Cg and Tg
-  getParray(dx, Cg, Tg) {
+  getParray(dxArray, Cg, Tg) {
+    const nCg = Cg.length;
+    const nTg = Tg.length;
     const result = [];
-    dx.forEach((element) => {
-      result.push(this.calculateP(element, Cg, Tg));
+    dxArray.forEach((dx) => {
+      result.push(this.calculateP(dx, Cg, Tg, nCg, nTg));
     });
     return result;
   },
 
   /**
-   * Gives P values for the given subgroups with dx values
-   * @param {number[]} dx the array of dx values
+   * Gives P values for the given subgroups
+   * @param {number[]} dxArray the array of dx values
    * @param {object} data the object containing subgroups data
    * @return {array[]} the P values for the different subgroups
    */
-  getParrays(dx, data) {
+  getParrays(dxArray, data) {
     const matchingSubs = this.matchingSubgroups(data);
+    console.log(matchingSubs);
     const result = [];
     matchingSubs.forEach((element) => {
-      result.push(this.getParray(dx, data[element[0]], data[element[1]]));
+      result.push(this.getParray(dxArray, data[element[0]], data[element[1]]));
     });
     return result;
   },
@@ -87,7 +86,7 @@ const Calc = {
 
   //Checks if the two strings are the same after the first character
   sameSubgroup(Tg, Cg) {
-    return Tg.slice(1) == Cg.slice(1);
+    return Tg.slice(1) === Cg.slice(1);
   },
 
   //Calculates the integral between the given bounds, of the given function, numerically
