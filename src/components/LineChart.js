@@ -20,7 +20,7 @@ class LineChart extends React.Component {
             datasets: [
               {
                 label: "My First Dataset",
-                data: this.getData(this.props.fileData)[0],
+                data: this.getData(this.props.fileData)[2],
                 fill: false,
                 borderColor: "rgb(75, 192, 192)",
                 tension: 0.1,

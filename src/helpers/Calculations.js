@@ -4,22 +4,18 @@ const Calc = {
    * Returns Cg for these matching subgroups.
    */
   calculateCg(dx, Cg, Tg, nCg, nTg) {
-    let A = 0;
-    for (let i = 0; i < nCg; i++) {
-      A += Math.pow(Cg[i], 2);
-    }
-    let B = 0;
-    for (let j = 0; j < nTg; j++) {
-      B += Math.pow(Tg[j] + dx, 2);
-    }
-    let C = 0;
-    for (let i = 0; i < nCg; i++) {
-      C += Cg[i];
-    }
-    let D = 0;
-    for (let j = 0; j < nTg; j++) {
-      D += Tg[j] + dx;
-    }
+    let A = 0,
+      B = 0,
+      C = 0,
+      D = 0;
+    Cg.forEach((n) => {
+      A += n * n;
+      C += n;
+    });
+    Tg.forEach((n) => {
+      B += Math.pow(n + dx, 2);
+      D += n + dx;
+    });
     return A + B - Math.pow(C + D, 2) / (nCg + nTg);
   },
 
@@ -53,6 +49,8 @@ const Calc = {
     console.log(matchingSubs);
     const result = [];
     matchingSubs.forEach((element) => {
+      console.log("0:" + element[0] + ", " + data[element[0]]);
+      console.log("1:" + element[1] + ", " + data[element[1]]);
       result.push(this.getParray(dxArray, data[element[0]], data[element[1]]));
     });
     return result;

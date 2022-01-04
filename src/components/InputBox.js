@@ -1,5 +1,4 @@
 import React from "react";
-import { Calc } from "../helpers/Calculations";
 import ScatterChart from "./ScatterChart";
 import LineChart from "./LineChart";
 
