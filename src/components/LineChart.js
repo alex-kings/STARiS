@@ -19,10 +19,24 @@ class LineChart extends React.Component {
             labels: this.DX,
             datasets: [
               {
-                label: "My First Dataset",
+                label: "P(dx |D-)",
+                data: this.getData(this.props.fileData)[0],
+                fill: false,
+                borderColor: "rgb(200, 192, 0)",
+                tension: 0.1,
+              },
+              {
+                label: "P(dx |D0)",
+                data: this.getData(this.props.fileData)[1],
+                fill: false,
+                borderColor: "rgb(120, 192, 120)",
+                tension: 0.1,
+              },
+              {
+                label: "P(dx |D+)",
                 data: this.getData(this.props.fileData)[2],
                 fill: false,
-                borderColor: "rgb(75, 192, 192)",
+                borderColor: "rgb(0, 192, 200)",
                 tension: 0.1,
               },
             ],

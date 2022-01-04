@@ -46,12 +46,22 @@ const Calc = {
    */
   getParrays(dxArray, data) {
     const matchingSubs = this.matchingSubgroups(data);
-    console.log(matchingSubs);
     const result = [];
     matchingSubs.forEach((element) => {
-      console.log("0:" + element[0] + ", " + data[element[0]]);
-      console.log("1:" + element[1] + ", " + data[element[1]]);
-      result.push(this.getParray(dxArray, data[element[0]], data[element[1]]));
+      result.push(
+        //Need the normalized function
+        this.normalized(
+          /**
+           *
+           *
+           * TEMP !!!!
+           * Exchanged Cg and Tg!
+           *
+           *
+           */
+          this.getParray(dxArray, data[element[1]], data[element[0]])
+        )
+      );
     });
     return result;
   },
@@ -87,14 +97,41 @@ const Calc = {
     return Tg.slice(1) === Cg.slice(1);
   },
 
-  //Calculates the integral between the given bounds, of the given function, numerically
-  numericalIntegral(mathematicalFunction, lower, upper, n) {
-    let dx = (upper - lower) / n;
-    let integral = 0;
-    for (let k = 1; k <= n; k++) {
-      integral += mathematicalFunction(lower + dx * (k - 0.5));
+  /**
+   * Normalizes an array along all its interval.
+   * @param array an array of numbers
+   * @returns the normalized array
+   */
+  normalized(array) {
+    let C = 0;
+    array.forEach((element) => {
+      C += element;
+    });
+    let normalized = [];
+    array.forEach((element) => {
+      normalized.push(element / C);
+    });
+    return normalized;
+  },
+
+  // NEEDS TESTING
+  /**
+   * Gives the sum of the given arrays
+   * @param arrays the arrays we want the sum of
+   * @returns the sum
+   */
+  sumArrays(arrays) {
+    let sum = [];
+    // Gives "sum" the right dimensions
+    arrays[0].forEach(() => {
+      sum.push(0);
+    });
+    for (let i = 0; i < sum.length; i++) {
+      arrays.forEach((array) => {
+        sum[i] += array[i];
+      });
     }
-    return dx * integral;
+    return sum;
   },
 
   //Returns an array starting and ending with given values, with a number of elements
@@ -105,6 +142,16 @@ const Calc = {
       arr.push(parseFloat((startValue + step * i).toFixed(2)));
     }
     return arr;
+  },
+
+  //Calculates the integral between the given bounds, of the given function, numerically
+  numericalIntegral(mathematicalFunction, lower, upper, n) {
+    let dx = (upper - lower) / n;
+    let integral = 0;
+    for (let k = 1; k <= n; k++) {
+      integral += mathematicalFunction(lower + dx * (k - 0.5));
+    }
+    return dx * integral;
   },
 };
 
